@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}{% endblock %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <style>
+        body { margin: 0; font-family: Arial, sans-serif; }
+        header { background: #111827; color: white; padding: 16px; }
+        nav a { color: white; margin-right: 20px; text-decoration: none; }
+        nav a:hover { text-decoration: underline; }
+        main { padding: 40px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        footer { background: #f3f4f6; padding: 20px; text-align: center; color: #555; }
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+        .btn.secondary { background: #4b5563; }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/resume/">자기소개서 평가</a>
+            <a href="/interview/">면접 질문</a>
+            <a href="/board/">자유게시판</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<footer>
+    AI 면접관 · 자기소개서 평가 챗봇
+</footer>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>
