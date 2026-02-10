@@ -1,6 +1,35 @@
 {% extends "base/index.html" %}
 
-{% block title %}홈 | AI 면접관{% endblock %}
+{% block title %}<title>홈 | Fitjob</title>{% endblock %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% endblock %}
+{% block header %}
+<header>
+    <div class="container">
+        <nav>
+            <!-- 왼쪽 : 로고 -->
+            <div class="nav-left">
+            <a href="/">Fitjob</a>
+            </div>
+
+            <!-- 가운데: 메뉴 -->
+            <div class="nav-center">
+                <a href="/resume/">자기소개서 평가</a>
+                <a href="/interview/">면접 질문</a>
+                <a href="/board/">자유게시판</a>
+            </div>
+
+            <!-- 오른쪽: 로그인/회원가입 -->
+            <div class="nav-right">
+                <a href="{% url 'user:login' %}">로그인</a>
+                <a href="/user/signup/">회원가입</a>
+            </div>
+        </nav>
+    </div>
+</header>
+{% endblock %}
 
 {% block content %}
 <h1>AI 면접관 / 자기소개서 평가 챗봇</h1>
