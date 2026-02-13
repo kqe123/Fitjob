@@ -1,4 +1,3 @@
-body { margin: 0; font-family: Arial, sans-serif; }
 header {background: #FFFFFF;
         color: white;
         padding: 10px;
@@ -7,7 +6,7 @@ header {background: #FFFFFF;
 
 /* 왼쪽 로고 */
 .nav-left {
-    margin-left: 20px;
+    margin-left: 10px;
     font-size: 25px;
     font-weight: 800;
 }
@@ -35,21 +34,14 @@ nav {
     align-items: center;
 }
 
-nav a { color: black;
-        margin-right: 30px;
-        text-decoration: none;
-        font-family: "Pretendard";}
-nav a:hover { text-decoration: underline; }
-main { padding: 40px; }
-.container {  margin: 0 auto; }
-footer { background: #f3f4f6; padding: 20px; text-align: center; color: #555; }
-.btn {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #2563eb;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    margin-right: 10px;
-    }
-.btn.secondary { background: #4b5563; }
+header nav a{
+  display: inline-block;
+  padding: 8px 14px; /* 배경색 변화를 표현하기 위해 패딩 추가 */
+  border-radius: 6px; /* 경계를 타원으로 둥글게 */
+  color: #000000;
+  text-decoration: none;
+}
+
+header nav a:hover{
+  background-color: #f3eeee; /* 마우스 커서를 대면 배경색 변화  */
+}

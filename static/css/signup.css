@@ -1,0 +1,132 @@
+:root{
+    --blue:#1f66ff;
+    --text:#111;
+    --muted:#666;
+    --line:#e6e8ee;
+    --bg:#f6f7fb;
+    --card:#fff;
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+    
+.home-link{
+  position: absolute;
+  top : -10px;
+  right: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #857474;
+}
+
+.home-link:hover{
+  color: #1f66ff;
+}
+
+
+/* Hero title */
+.hero{
+    text-align:center;
+    padding:10px 0 18px;
+}
+.hero .tagline{
+    font-size:25px;
+    font-weight:500;
+    margin-bottom:10px;
+    text-align:center;
+    font-family: "Pretendard", sans-serif;
+}
+.logo{
+    display:inline-flex;
+    align-items:baseline;
+    font-weight:600;
+    letter-spacing:-1px;
+    color:var(--blue);
+    font-size:40px;
+    line-height:1;
+    font-family: "Pretendard", sans-serif;
+}
+
+.helper-text{
+    text-align:left;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+.helper-text .tagline{
+    font-size:16px;
+    font-weight:500;
+    text-align:left;
+    font-family: "Pretendard", sans-serif;
+}
+
+/* Panel */
+.panel{
+    margin-top : 60px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow: var(--shadow);
+    padding:26px;
+}
+
+.form-row{
+    display:flex;
+    gap:12px;
+    align-items:stretch;
+    margin-top : 20px;
+}
+
+.fields{flex:1; display:flex; flex-direction:column; gap:10px}
+.field{
+    display:flex;
+    align-items:center; /* 세로 가운데 정렬 */
+    gap:10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 12px;
+    background:#fff;
+}
+input{
+    width:100%;
+    border:0;
+    outline:none;
+    font-size:14px;
+    background:transparent;
+}
+
+    .btn{
+      height:50px;
+      width : 100%;
+      border:0;
+      border-radius:12px;
+      background:var(--blue);
+      color:#fff;
+      font-weight:800;
+      font-size:15px;
+      cursor:pointer;
+      margin-top : 20px;
+    }
+    .btn:active{transform: translateY(1px)}
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+      .btn{width:100%}
+      .form-row{flex-direction:column}
+    }
+
+.error {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #b35f59;
+    background-color: #fdecea;
+    border-radius: 8px;
+    font-weight: 500;
+}

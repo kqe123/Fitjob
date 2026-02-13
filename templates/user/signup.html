@@ -1,0 +1,77 @@
+{% extends "base/index.html" %}
+
+{% block title %}<title>Fitjob | 회원가입</title>{% endblock %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+        <a class="home-link" href="{% url 'fitjob:main' %}">HOME</a>
+        <div class="hero">
+              <div class="tagline" style="text-decoration:underline;"><span style="font-weight:900;">면접</span>을 예측하고, <span style="font-weight:900;">합격</span>을 설계하다.</div>
+              <div class="logo" aria-label="브랜드">Fitjob</div>
+        </div>
+        <section class="panel">
+            <h2 style="font-family: 'Pretendard', sans-serif;">회원가입</h2>
+            <div class="helper-text">
+              <div class="tagline">*아이디: 5~20자의 영문/숫자</div>
+              <div class="tagline">*비밀번호: 8자 이상</div>
+              <div class="tagline">*닉네임: 2~10자의 한글/영문/숫자/_ (비속어 사용 시 계정이 제한 될 수 있습니다.)</div>
+            </div>
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags == "success" %}
+                    <script>alert("{{ message }}");</script>
+                  {% else %}
+                    <p style="color:red;">{{ message }}</p>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              <form action="{% url 'user:signup' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-row">
+                  <div class="fields">
+                    <div class="field">
+                      <input type="text" name="username" placeholder="아이디" autocomplete="username" 
+                              value="{{ form.data.username|default:'' }}"/>
+                    </div>
+                    {% if form.username.errors %}
+                        <div class="error">{{ form.username.errors.0 }}</div>
+                    {% endif %}
+                    <div class="field">
+                      <input type="password" name="password1" placeholder="비밀번호" autocomplete="current-password" />
+                    </div>
+                    {% if form.password1.errors %}
+                        <div class="error">{{ form.password1.errors.0 }}</div>
+                    {% endif %}
+                    <div class="field">
+                      <input type="password" name="password2" placeholder="비밀번호 확인" autocomplete="current-password" />
+                    </div>
+                    {% if form.password2.errors %}
+                        <div class="error">{{ form.password2.errors.0 }}</div>
+                    {% endif %}
+                    <div class="field">
+                      <input type="text" name="nickname" placeholder="닉네임" autocomplete="username" value="{{ form.data.nickname|default:'' }}"/>
+                    </div>
+                    {% if form.nickname.errors %}
+                        <div class="error">{{ form.nickname.errors.0 }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <button class="btn" type="submit">회원가입</button>
+              </form>
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags == "success" %}
+                    <script>
+                      alert("{{ message|escapejs }}");
+                    </script>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </section>
+{% endblock %}

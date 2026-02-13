@@ -100,6 +100,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'user.User' # 커스텀 유저 모델 설정
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

@@ -1,0 +1,27 @@
+body { 
+    margin: 0; 
+    font-family: "Pretendard", sans-serif; /* 글꼴 설정 */
+}
+
+main { padding: 40px; } 
+.container{
+  position: relative;      /* 기준점 */
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 0 20px;         /* 우측 끝 너무 붙는 거 방지(추천) */
+}
+
+/* footer */
+footer { background: #f3f4f6; padding: 20px; text-align: center; color: #555; }
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-right: 10px;
+    }
+.btn.secondary { background: #4b5563; }
