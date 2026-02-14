@@ -10,7 +10,7 @@ def login(request) :
 
 def signup(request):
     if request.method == "POST":
-        form = SignupForm(request.POST) # 4가지 인자를 통째로 받아서 저장. 
+        form = SignupForm(request.POST) # POST 요청으로 받은 모든 파라미터를 폼에 전달 
         if form.is_valid(): # is_valid() : Form에 정의된 모든 검증 로직을 한 번에 실행하는 트리거 함수
             form.save()
             messages.success(request, "✅ 회원가입이 완료되었습니다.")

@@ -20,15 +20,6 @@
               <div class="tagline">*비밀번호: 8자 이상</div>
               <div class="tagline">*닉네임: 2~10자의 한글/영문/숫자/_ (비속어 사용 시 계정이 제한 될 수 있습니다.)</div>
             </div>
-              {% if messages %}
-                {% for message in messages %}
-                  {% if message.tags == "success" %}
-                    <script>alert("{{ message }}");</script>
-                  {% else %}
-                    <p style="color:red;">{{ message }}</p>
-                  {% endif %}
-                {% endfor %}
-              {% endif %}
               <form action="{% url 'user:signup' %}" method="POST">
                 {% csrf_token %}
                 <div class="form-row">
