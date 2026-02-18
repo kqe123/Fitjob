@@ -23,7 +23,12 @@
 
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
-            <a href="{% url 'user:login' %}">로그인</a>
+            {% if user.is_authenticated %}
+                <p><span style="font-weight:900; color:red;">{{ user.username }}</span>님 환영합니다.</p>
+                <a href="{% url 'user:logout' %}">로그아웃</a>
+            {% else %}
+                <a href="{% url 'user:login' %}">로그인</a>
+            {% endif %}
             <a href="/user/signup/">회원가입</a>
         </div>
     </nav>
@@ -52,4 +57,13 @@
     <p>🎤 프로젝트·자소서 기반 면접 질문 생성</p>
     <p>💬 자유게시판을 통한 정보 공유</p>
 </div>
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == "success" %}
+            <script>
+                alert("{{ message|escapejs }}");
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
 {% endblock %}

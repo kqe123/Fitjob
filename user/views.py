@@ -3,12 +3,38 @@ from .models import User
 from django.contrib import messages
 from django.shortcuts import redirect
 import re
-from .forms import SignupForm
+from .forms import SignupForm, LoginForm
+from django.contrib.auth import login, logout
 
-def login(request) :
-    return render(request, "user/login.html")
+def login_try(request) :
+    # 이미 로그인된 상태면 로그인 페이지 접근 불가
+    if request.user.is_authenticated :
+        messages.info(request, "이미 로그인된 상태입니다.")
+        return redirect("fitjob:main")
+    
+    # 폼 요청 O -> 로그인 시도
+    elif request.method == "POST" :
+        form = LoginForm(request.POST)
+        if form.is_valid() : # 모든 검증 로직이 통과되면 True
+            auth_user = form.cleaned_data.get("auth_user") # cleaned_data에서 User객체 가져옴.
+            login(request, auth_user) # 로그인 인가 
+            messages.success(request, f"✅ {auth_user.nickname}님 환영합니다.")
+            return redirect("fitjob:main")
+        # 로그인 실패면 그대로 login 페이지 렌더 (이동 X)
+        return render(request, "user/login.html", {"form": form})
+    
+    # 폼 요청 X -> 로그인 페이지 렌더링
+    form = LoginForm()
+    return render(request, "user/login.html", {"form": form})
 
-def signup(request):
+def logout_try(request) :
+    logout(request)
+    messages.success(request, "✅ 로그아웃 되었습니다.")
+    return redirect("fitjob:main")
+
+
+def signup_try(request):
+    # 폼 요청 O -> 회원가입 시도
     if request.method == "POST":
         form = SignupForm(request.POST) # POST 요청으로 받은 모든 파라미터를 폼에 전달 
         if form.is_valid(): # is_valid() : Form에 정의된 모든 검증 로직을 한 번에 실행하는 트리거 함수
@@ -18,6 +44,7 @@ def signup(request):
         # 실패면 그대로 signup 페이지 렌더 (이동 X)
         return render(request, "user/signup.html", {"form": form})
 
+    # 폼 요청 X -> 회원가입 페이지 렌더링
     form = SignupForm()
     return render(request, "user/signup.html", {"form": form})
-# Create your views here.
+

@@ -120,3 +120,12 @@ input{
     .btn{width:100%}
     .form-row{flex-direction:column}
 }
+
+.error {
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #b35f59;
+    background-color: #fdecea;
+    border-radius: 8px;
+    font-weight: 500;
+}

@@ -3,8 +3,8 @@ import re
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-
 User = get_user_model()
+from django.contrib.auth import authenticate
 
 # 아이디: 5~20 영문/숫자
 USERNAME_RULE = re.compile(r"^[A-Za-z0-9]{5,20}$")
@@ -15,6 +15,7 @@ PASSWORD_RULE = re.compile(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$")
 # 닉네임: 2~10자, 한글/영문/숫자/_
 NICKNAME_RULE = re.compile(r"^[가-힣A-Za-z0-9_]{2,10}$")
 
+# 회원가입폼
 # 모델폼 : Django 모델과 연동된 폼
 class SignupForm(forms.ModelForm):
     # 재정의 필드
@@ -93,3 +94,24 @@ class SignupForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+# 로그인폼
+# 폼 : Django 모델과 연동 X
+class LoginForm(forms.Form) :
+    # 재정의 필드
+    username = forms.CharField(error_messages={"required": "아이디를 입력해주세요."})
+    password = forms.CharField(widget=forms.PasswordInput, error_messages={"required": "비밀번호를 입력해주세요."})
+
+    def clean(self) :
+        cleaned = super().clean()
+        username = cleaned.get("username")
+        password = cleaned.get("password")
+        if username and password : 
+            auth_user = authenticate(username=username, password=password)
+            if not auth_user : 
+                raise ValidationError("아이디 또는 비밀번호가 올바르지 않습니다.")
+            cleaned["auth_user"] = auth_user
+        
+        return cleaned
+    
+                

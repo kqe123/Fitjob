@@ -14,20 +14,38 @@
               <div class="tagline" style="text-decoration:underline;"><span style="font-weight:900;">면접</span>을 예측하고, <span style="font-weight:900;">합격</span>을 설계하다.</div>
               <div class="logo" aria-label="브랜드">Fitjob</div>
             </div>
-              <form>
+              <form action="{% url 'user:login' %}" method="post">
+                {% csrf_token %}
                 <div class="form-row">
                   <div class="fields">
+                    {% if form.non_field_errors %}
+                        <div class="error">{{ form.non_field_errors.0 }}</div>
+                    {% endif %}
                     <div class="field">
-                      <input type="text" placeholder="ID를 입력하세요" autocomplete="username" />
+                      <input type="text" name="username" placeholder="ID를 입력하세요" autocomplete="username" value="{{ form.data.username|default:'' }}" />
                     </div>
+                    {% if form.username.errors %}
+                        <div class="error">{{ form.username.errors.0 }}</div>
+                    {% endif %}
                     <div class="field">
-                      <input type="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password" />
+                      <input type="password" name="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password" />
                     </div>
+                    {% if form.password.errors %}
+                        <div class="error">{{ form.password.errors.0 }}</div>
+                    {% endif %}
                   </div>
                   <button class="btn" type="submit">로그인</button>
                 </div>
-
               </form>
+              {% if messages %}
+                {% for message in messages %}
+                  {% if message.tags == "success" %}
+                    <script>
+                      alert("{{ message|escapejs }}");
+                    </script>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
             </div>
           </div>
         </section>

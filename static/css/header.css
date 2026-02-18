@@ -1,5 +1,4 @@
 header {background: #FFFFFF;
-        color: white;
         padding: 10px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 아래 그림자선 */
 }
@@ -26,6 +25,8 @@ header {background: #FFFFFF;
     justify-content: flex-end;
     font-size: 16px;
     font-weight: 500;
+    gap : 10px;
+    align-items: center;  /* 세로 가운데 정렬 */
 }
 
 nav {
@@ -44,4 +45,11 @@ header nav a{
 
 header nav a:hover{
   background-color: #f3eeee; /* 마우스 커서를 대면 배경색 변화  */
+}
+
+header nav p{
+  display: inline-block;
+  color: #000000;
+  text-decoration: none;
+  margin : 0; /* p 태그의 기본 여백 제거 */
 }
