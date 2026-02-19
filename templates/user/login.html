@@ -16,23 +16,30 @@
             </div>
               <form action="{% url 'user:login' %}" method="post">
                 {% csrf_token %}
+                <!-- 🔴 에러 영역 -->
+                <div class="error-row">
+                    <div class="error-fields">
+                        {% if form.non_field_errors %}
+                            <div class="error">{{ form.non_field_errors.0 }}</div>
+                        {% endif %}
+
+                        {% if form.username.errors %}
+                            <div class="error">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+
+                        {% if form.password.errors %}
+                            <div class="error">{{ form.password.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
                 <div class="form-row">
                   <div class="fields">
-                    {% if form.non_field_errors %}
-                        <div class="error">{{ form.non_field_errors.0 }}</div>
-                    {% endif %}
                     <div class="field">
-                      <input type="text" name="username" placeholder="ID를 입력하세요" autocomplete="username" value="{{ form.data.username|default:'' }}" />
+                      <input type="text" name="username" placeholder="ID" autocomplete="username" value="{{ form.data.username|default:'' }}" />
                     </div>
-                    {% if form.username.errors %}
-                        <div class="error">{{ form.username.errors.0 }}</div>
-                    {% endif %}
                     <div class="field">
-                      <input type="password" name="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password" />
+                      <input type="password" name="password" placeholder="비밀번호" autocomplete="current-password" />
                     </div>
-                    {% if form.password.errors %}
-                        <div class="error">{{ form.password.errors.0 }}</div>
-                    {% endif %}
                   </div>
                   <button class="btn" type="submit">로그인</button>
                 </div>

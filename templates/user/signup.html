@@ -24,31 +24,28 @@
                 {% csrf_token %}
                 <div class="form-row">
                   <div class="fields">
+                    {% if form.errors %}
+                      <div class="error">
+                        {% for field, errors in form.errors.items %}
+                          {% for error in errors %}
+                            <div style="margin-top: 4px;">{{ error }}</div>
+                          {% endfor %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
                     <div class="field">
                       <input type="text" name="username" placeholder="아이디" autocomplete="username" 
                               value="{{ form.data.username|default:'' }}"/>
                     </div>
-                    {% if form.username.errors %}
-                        <div class="error">{{ form.username.errors.0 }}</div>
-                    {% endif %}
                     <div class="field">
                       <input type="password" name="password1" placeholder="비밀번호" autocomplete="current-password" />
                     </div>
-                    {% if form.password1.errors %}
-                        <div class="error">{{ form.password1.errors.0 }}</div>
-                    {% endif %}
                     <div class="field">
                       <input type="password" name="password2" placeholder="비밀번호 확인" autocomplete="current-password" />
                     </div>
-                    {% if form.password2.errors %}
-                        <div class="error">{{ form.password2.errors.0 }}</div>
-                    {% endif %}
                     <div class="field">
                       <input type="text" name="nickname" placeholder="닉네임" autocomplete="username" value="{{ form.data.nickname|default:'' }}"/>
                     </div>
-                    {% if form.nickname.errors %}
-                        <div class="error">{{ form.nickname.errors.0 }}</div>
-                    {% endif %}
                   </div>
                 </div>
                 <button class="btn" type="submit">회원가입</button>

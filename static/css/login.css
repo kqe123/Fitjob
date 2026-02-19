@@ -7,6 +7,10 @@
     --card:#fff;
     --radius:14px;
     --shadow: 0 10px 30px rgba(0,0,0,.08);
+    --fields: 400px;
+    --btn: 120px;
+    --gap: 12px;
+    --formW: calc(var(--fields) + var(--gap) + var(--btn)); /* 552px */
 }
 *{box-sizing:border-box}
 body{
@@ -65,33 +69,6 @@ body{
     box-shadow: var(--shadow);
     padding:26px;
 }
-
-.form-row{
-  margin-top: 60px;
-  display: flex;
-  gap: 12px;
-  justify-content: center;   /* ⭐ 가로로 가운데 */
-  align-items: stretch;   /* ⭐ 버튼 높이가 fields 높이로 늘어남 */
-}
-
-.fields{
-  flex: 0 0 400px;   /* ⭐ 더 이상 남는 공간 먹지 않음(고정 폭) */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: stretch;  /* ⭐ 입력칸이 폭 꽉 차게 */
-}
-
-.field{
-  width: 100%;       /* ⭐ fields 폭에 맞춤 */
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 12px 12px;
-  background: #fff;
-}
 input{
     width:100%;
     border:0;
@@ -101,7 +78,7 @@ input{
 }
 
 .btn{
-    width:140px;
+    width:120px;
     border:0;
     border-radius:12px;
     background:var(--blue);
@@ -121,11 +98,56 @@ input{
     .form-row{flex-direction:column}
 }
 
-.error {
-    padding: 8px 12px;
-    font-size: 13px;
-    color: #b35f59;
-    background-color: #fdecea;
-    border-radius: 8px;
-    font-weight: 500;
+/* ====== row layout ====== */
+.form-row{
+  margin-top: 15px;
+  display: flex;
+  gap: var(--gap);
+  justify-content: center;
+  align-items: flex-start; /* ✅ stretch → flex-start (버튼 길어지는 문제 방지) */
+}
+
+.fields{
+  flex: 0 0 var(--fields);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.field{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 12px;
+  background: #fff;
+}
+
+/* ====== error area (폼 전체 폭과 동일) ====== */
+.error-row{
+  margin-top: 30px;
+  margin-left : -10px;
+  display: flex;
+  justify-content: center;
+}
+
+.error-fields{
+  flex: 0 0 var(--formW); /* ✅ 552px를 직접 쓰지 않고 formW로 통일 */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: stretch;
+}
+
+.error{
+  padding: 8px 8px;       /* ✅ field와 동일하게 맞춰서 “왼쪽선” 느낌 통일 */
+  font-size: 13px;
+  color: #b35f59;
+  background-color: #fdecea;
+  border-radius: 8px;
+  font-weight: 700;
+
 }
