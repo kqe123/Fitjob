@@ -3,11 +3,26 @@ header {background: #FFFFFF;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 아래 그림자선 */
 }
 
-/* 왼쪽 로고 */
+nav {
+  height: 40px;  /* 헤더 내부 높이 기준 */
+}
+
 .nav-left {
-    margin-left: 10px;
-    font-size: 25px;
-    font-weight: 800;
+  margin-left : 10px; /* 왼쪽 여백 */
+}
+/* ✅ 로고 전용 링크는 따로 덮어쓰기 */
+.nav-left a {
+  padding: 0;
+  background: none !important;
+}
+
+.nav-left a:hover {
+  background: none;
+}
+
+.nav-left img {
+  height: 35px;
+  display: block;
 }
 
 /* 가운데 메뉴: 남는 공간을 차지 + 가운데 정렬 */

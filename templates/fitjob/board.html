@@ -1,6 +1,6 @@
 {% extends "base/index.html" %}
 
-{% block title %}<title>Fitjob | 홈</title>{% endblock %}
+{% block title %}<title>Fitjob | 취업톡</title>{% endblock %}
 {% block css %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
@@ -20,7 +20,7 @@
         <div class="nav-center">
             <a href="/resume/">자기소개서 평가</a>
             <a href="/interview/">면접 질문</a>
-            <a href="{% url 'fitjob:board' %}">취업톡</a>
+            <a href="{% url 'fitjob:board' %}"><span style="color:blue;">취업톡</span></a>
         </div>
 
         <!-- 오른쪽: 로그인/회원가입 -->
@@ -51,13 +51,6 @@
     <a href="/interview/" class="btn secondary">면접 질문 뽑기</a>
 
     <hr style="margin: 40px 0;">
-
-    <h2>주요 기능</h2>
-
-    <p>📄 자기소개서 항목별 분석 (직무적합·구체성·논리·성과)</p>
-    <p>✏️ 개선 전 / 개선 후 비교 피드백</p>
-    <p>🎤 프로젝트·자소서 기반 면접 질문 생성</p>
-    <p>💬 자유게시판을 통한 정보 공유</p>
 </div>
 {% if messages %}
     {% for message in messages %}
