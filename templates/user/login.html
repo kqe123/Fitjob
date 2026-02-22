@@ -12,7 +12,7 @@
         <section class="panel">
             <div class="hero">
               <div class="tagline" style="text-decoration:underline;"><span style="font-weight:900;">면접</span>을 예측하고, <span style="font-weight:900;">합격</span>을 설계하다.</div>
-              <div class="logo" aria-label="브랜드">Fitjob</div>
+              <img src="{% static 'images/logo2.png' %}" alt="로고2" style="height: 45px;">
             </div>
               <form action="{% url 'user:login' %}" method="post">
                 {% csrf_token %}

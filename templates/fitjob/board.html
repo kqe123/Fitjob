@@ -5,6 +5,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/board.css' %}">
 {% endblock %}
 {% block header %}
 <header>
@@ -39,17 +40,63 @@
 
 {% block content %}
 <div class="container">
-    <h1>Fitjob</h1>
-    <p>
-        자기소개서를 기반으로 <strong>근거 있는 피드백</strong>과
-        <strong>면접 질문</strong>을 제공하는 AI 코치 서비스 <strong>Fitjob</strong>입니다.
-    </p>
+    <h2>취업톡</h2>
+    <p>총 <span style="color:rgb(67, 189, 238); font-weight:bold;">{{ questions.paginator.count }}</span>건</p>
+    {% for question in questions %}
+        <section class="post">
+            <div class="title">{{question.title|truncatechars:30}}</div>
+            <div class="content">{{question.content|truncatechars:150}}</div>
+            <div class="meta">{{question.created_at|date:"Y-m-d"}} 작성</div>
+        </section>
+    {% endfor %}
+    
+<!-- 페이지네이션 -->
+<nav class="pagination" aria-label="페이지 네비게이션">
+  <ul class="pagination__list">
 
-    <br>
+    <!-- 이전 페이지 -->
+    {% if questions.has_previous %}
+      <li class="pagination__item">
+        <a class="pagination__link" href="?page={{ questions.previous_page_number }}" aria-label="이전 페이지">
+          ‹ 이전
+        </a>
+      </li>
+    {% else %}
+      <li class="pagination__item">
+        <span class="pagination__link is-disabled" aria-disabled="true" tabindex="-1">‹ 이전</span>
+      </li>
+    {% endif %}
 
-    <a href="/resume/" class="btn">자기소개서 평가 시작</a>
-    <a href="/interview/" class="btn secondary">면접 질문 뽑기</a>
+    <!-- 페이지 번호 -->
+    {% for page_number in questions.paginator.page_range %}
+      {% if page_number >= questions.number|add:-5 and page_number <= questions.number|add:5 %}
+        {% if page_number == questions.number %}
+            <li class="pagination__item">
+            <span class="pagination__link is-active" aria-current="page">{{ page_number }}</span>
+            </li>
+        {% else %}
+            <li class="pagination__item">
+            <a class="pagination__link" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+        {% endif %}
+      {% endif %} 
+    {% endfor %}
 
+    <!-- 다음 페이지 -->
+    {% if questions.has_next %}
+      <li class="pagination__item">
+        <a class="pagination__link" href="?page={{ questions.next_page_number }}" aria-label="다음 페이지">
+          다음 ›
+        </a>
+      </li>
+    {% else %}
+      <li class="pagination__item">
+        <span class="pagination__link is-disabled" aria-disabled="true" tabindex="-1">다음 ›</span>
+      </li>
+    {% endif %}
+
+  </ul>
+</nav>
     <hr style="margin: 40px 0;">
 </div>
 {% if messages %}
