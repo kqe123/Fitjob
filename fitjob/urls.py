@@ -6,4 +6,5 @@ urlpatterns = [
     path("", main, name="main"),
     path("board/", board, name="board"),
     path("board/create/", question_create, name="question_create"),
+    path("board/<int:question_id>/", question_detail, name="question_detail"),
 ]

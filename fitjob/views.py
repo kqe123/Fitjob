@@ -34,3 +34,13 @@ def question_create(request) :
         # 실패면 그대로 signup 페이지 렌더 (이동 X)
         return render(request, "fitjob/question_create.html", {"form": form})
     return render(request, "fitjob/question_create.html")
+
+def question_detail(request, question_id) :
+    question = Question.objects.get(id=question_id)
+    user_questions_count = 0 # 해당 유저의 질문 개수 (기본값 : 0)
+
+    if request.user.is_authenticated :
+        user_questions_count = Question.objects.filter(user_id=request.user.id).count()
+    context = {"question": question, "user_question_count": user_questions_count}
+    return render(request, "fitjob/question_detail.html", context)
+

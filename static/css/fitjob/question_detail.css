@@ -1,0 +1,180 @@
+/* Panel */
+:root{
+    --blue:#1f66ff;
+    --text:#111;
+    --muted:#666;
+    --bg:#f6f7fb;
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(0,0,0,.08);
+    --card:#fff;
+    --line:#e6e8ee;
+}
+
+
+/* Panel */
+.panel{
+    margin-top : 30px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    box-shadow: var(--shadow);
+    padding:6px;
+}
+.post{
+  margin-left : 25px;
+  margin-right : 25px;
+}
+.post .title {
+    font-size: 24px;
+    font-weight: 500;
+    color : #111;
+    text-decoration: none;   /* 밑줄 제거 */
+}
+.post .content {
+    font-size: 16px;
+    color : #555;
+    font-weight: 400;
+    text-decoration: none;   /* 밑줄 제거 */
+    line-height: 1.5;   /* 기본은 보통 1.2~1.4라 촘촘함 */
+}
+.post .nickname {
+    font-size: 14px;
+    color : #141414;
+    font-weight: 500;
+    margin: 0;
+}
+.post .date {
+    font-size: 14px;
+    color : #999;
+    margin: 0;
+}
+
+/* 상세 글 헤더(프로필 + 닉네임/날짜 2줄) */
+.post-header{
+  display: flex;  /* 가로 정렬 */
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+
+.post-header .avatar{
+  margin: 0;
+  width: 32px;
+  height: 32px;
+
+  display: block;        /* img 아래 여백 제거 */
+  object-fit: cover;     /* 핵심: 박스에 꽉 채움 */
+  border-radius: 50%;    /* 동그랗게 */
+  
+  border: 1px solid var(--line);
+  background: #f3f4f6;   /* 투명 PNG면 배경 깔끔 */
+}
+
+/* 프로필 사진 옆 오른쪽 2줄 영역 */
+.post-header__info{
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 4px;
+  line-height: 1.1;
+}
+
+
+
+.board-layout{
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* 왼쪽 사이드 */
+.board-side{
+  width: 210px;
+  flex: 0 0 210px;
+  position: static;
+  top: 80px; /* header 높이에 맞게 조절 */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 오른쪽 메인 */
+.board-main{
+  flex: 1;
+  min-width: 0;
+}
+
+/* 글쓰기 버튼 */
+.board-write-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 52px;
+  border-radius: 10px;
+  background: #2f3b59;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid #2f3b59;
+
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+
+.board-write-btn:hover{
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* (선택) 로그인 유도 카드 */
+.board-side-card{
+  background: #fff;
+  border: 1px solid #e6e8ee;
+  border-radius: 10px;
+  padding: 16px;
+}
+.board-side-avatar{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #eef1f7;
+  margin: 6px auto 12px;
+  display: block;          /* 핵심 */
+}
+
+.board-side-text{
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.board-side-login{
+  display: block;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+
+  border-radius: 8px;
+  border: 1px solid #d9dce6;
+  background: #f7f8fb;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.board-side-login:hover{
+  background: #f1f3f9;
+}
+
+/* 반응형: 모바일에서는 사이드 위로 */
+@media (max-width: 900px){
+  .board-layout{
+    flex-direction: column;
+  }
+  .board-side{
+    width: 100%;
+    flex: 0 0 auto;
+    position: static;
+  }
+}
