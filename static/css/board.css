@@ -108,3 +108,101 @@
   transform: none;
   box-shadow: none;
 }
+
+.board-layout{
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* 왼쪽 사이드 */
+.board-side{
+  width: 240px;
+  flex: 0 0 240px;
+  position: static;
+  top: 80px; /* header 높이에 맞게 조절 */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 오른쪽 메인 */
+.board-main{
+  flex: 1;
+  min-width: 0;
+}
+
+/* 글쓰기 버튼 */
+.board-write-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 52px;
+  border-radius: 10px;
+  background: #2f3b59;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid #2f3b59;
+
+  transition: transform 0.08s ease, opacity 0.15s ease;
+}
+
+.board-write-btn:hover{
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+/* (선택) 로그인 유도 카드 */
+.board-side-card{
+  background: #fff;
+  border: 1px solid #e6e8ee;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.board-side-avatar{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #eef1f7;
+  margin: 6px auto 12px;
+}
+
+.board-side-text{
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.board-side-login{
+  display: block;
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
+
+  border-radius: 8px;
+  border: 1px solid #d9dce6;
+  background: #f7f8fb;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.board-side-login:hover{
+  background: #f1f3f9;
+}
+
+/* 반응형: 모바일에서는 사이드 위로 */
+@media (max-width: 900px){
+  .board-layout{
+    flex-direction: column;
+  }
+  .board-side{
+    width: 100%;
+    flex: 0 0 auto;
+    position: static;
+  }
+}

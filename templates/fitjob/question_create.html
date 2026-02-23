@@ -1,0 +1,77 @@
+{% extends "base/index.html" %}
+
+{% block title %}<title>Fitjob | 홈</title>{% endblock %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/question.css' %}">
+{% endblock %}
+{% block header %}
+<header>
+    <nav>
+        <!-- 왼쪽 : 로고 -->
+        <div class="nav-left">
+            <a href="{% url 'fitjob:main' %}">
+                <img src="{% static 'images/logo.png' %}" alt="로고">
+            </a>
+        </div>
+
+        <!-- 가운데: 메뉴 -->
+        <div class="nav-center">
+            <a href="/resume/">자기소개서 평가</a>
+            <a href="/interview/">면접 질문</a>
+            <a href="{% url 'fitjob:board' %}">취업톡</a>
+        </div>
+
+        <!-- 오른쪽: 로그인/회원가입 -->
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <p><span style="font-weight:900; color:red;">{{ user.username }}</span>님 환영합니다.</p>
+                <a href="{% url 'user:logout' %}">로그아웃</a>
+            {% else %}
+                <a href="{% url 'user:login' %}">로그인</a>
+            {% endif %}
+            <a href="{% url 'user:signup' %}">회원가입</a>
+        </div>
+    </nav>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="panel">
+        <h2>질문 등록</h2>
+        <form method="post" action="{% url 'fitjob:question_create' %}">
+            {% csrf_token %}
+            <!-- 🔴 에러 영역 -->
+            <div class="error-row">
+                <div class="error-fields">
+                    {% if form.errors %}
+                    <div class="error">
+                        {% if form.non_field_errors %}{{ form.non_field_errors.0 }}<br>{% endif %}
+                        {% if form.title.errors %}{{ form.title.errors.0 }}<br>{% endif %}
+                        {% if form.content.errors %}{{ form.content.errors.0 }}{% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="fields">
+                    <div class="field">
+                        <input type="text" name="title" placeholder="질문 제목을 입력해주세요 (최대 100자)" value="{{ form.data.title|default:'' }}" />
+                    </div>
+                    <div class="field">
+                        <textarea name="content" placeholder="내용을 입력해주세요 (10~1500자)">{{ form.data.content|default:'' }}</textarea>
+                    </div>
+                        <input type="hidden" name="user_id" value="{{ user.id }}" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="btn" type="submit">질문 등록</button>
+                <a class="btn-cancel" href="{% url 'fitjob:board' %}">취소</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

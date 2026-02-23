@@ -4,7 +4,7 @@ body {
     font-family: "Pretendard", sans-serif; /* 글꼴 설정 */
 }
 
-main { padding: 40px; } 
+main { padding: 20px; } 
 .container{
   position: relative;      /* 기준점 */
   width: min(1100px, 100%);

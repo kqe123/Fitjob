@@ -13,9 +13,9 @@
     --formW: calc(var(--fields) + var(--gap) + var(--btn)); /* 552px */
 }
 *{box-sizing:border-box}
+
 body{
     margin:0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
     background:var(--bg);
     color:var(--text);
 }
@@ -63,6 +63,7 @@ body{
 
 /* Panel */
 .panel{
+    margin-top : 20px;
     background:var(--card);
     border:1px solid var(--line);
     border-radius:18px;
@@ -147,7 +148,9 @@ input{
   font-size: 13px;
   color: #b35f59;
   background-color: #fdecea;
-  border-radius: 8px;
+  border: 1px solid #f7c7c3;
+  border-radius: 10px;
   font-weight: 700;
+  line-height: 1.4;
 
 }

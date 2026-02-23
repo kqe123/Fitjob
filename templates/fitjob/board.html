@@ -40,72 +40,89 @@
 
 {% block content %}
 <div class="container">
-    <h2>취업톡</h2>
-    <p>총 <span style="color:rgb(67, 189, 238); font-weight:bold;">{{ questions.paginator.count }}</span>건</p>
-    {% for question in questions %}
-        <section class="post">
-            <div class="title">{{question.title|truncatechars:30}}</div>
-            <div class="content">{{question.content|truncatechars:150}}</div>
-            <div class="meta">{{question.created_at|date:"Y-m-d"}} 작성</div>
-        </section>
-    {% endfor %}
+  <div class="board-layout">
+    <!-- 왼쪽 사이드 -->
+    <aside class="board-side">
+      <a class="board-write-btn" href="{% url 'fitjob:question_create' %}">
+        ✍ 질문 · 글쓰기
+      </a>
+
+      {% if user.is_authenticated %}
+        <div class="board-side-card">
+          <div class="board-side-avatar"></div>
+          <p style="font-size: 13px; color: black; text-align: center; margin: 0 0 12px;"><span style="font-weight: bold;">{{ user.nickname }}</span>님</p>
+          <p style="font-size: 13px; color: #777; text-align: center; margin: 0 0 12px;">글 {{user_question_count}} | 답변 0</p>
+        </div>
+      {% else %}
+        <div class="board-side-card">
+          <div class="board-side-avatar"></div>
+          <p class="board-side-text">로그인 후 질문과 활동을 시작해보세요</p>
+          <a class="board-side-login" href="{% url 'user:login' %}">로그인</a>
+        </div>
+      {% endif %}
+    </aside>
+  
+  <main class="board-main">
+  <h2>취업톡</h2>
+  <p>총 <span style="color:rgb(67, 189, 238); font-weight:bold;">{{ questions.paginator.count }}</span>건</p>
+  {% for question in questions %}
+    <section class="post">
+      <div class="title">{{question.title|truncatechars:30}}</div>
+      <div class="content">{{question.content|truncatechars:150}}</div>
+      <div class="meta">
+        {{question.created_at|date:"Y-m-d"}} 작성</div>
+    </section>
+  {% endfor %}
     
-<!-- 페이지네이션 -->
-<nav class="pagination" aria-label="페이지 네비게이션">
-  <ul class="pagination__list">
+  <!-- 페이지네이션 -->
+  <nav class="pagination" aria-label="페이지 네비게이션">
+    <ul class="pagination__list">
 
-    <!-- 이전 페이지 -->
-    {% if questions.has_previous %}
-      <li class="pagination__item">
-        <a class="pagination__link" href="?page={{ questions.previous_page_number }}" aria-label="이전 페이지">
-          ‹ 이전
-        </a>
-      </li>
-    {% else %}
-      <li class="pagination__item">
-        <span class="pagination__link is-disabled" aria-disabled="true" tabindex="-1">‹ 이전</span>
-      </li>
-    {% endif %}
+      <!-- 이전 페이지 -->
+      {% if questions.has_previous %}
+        <li class="pagination__item">
+          <a class="pagination__link" href="?page={{ questions.previous_page_number }}" aria-label="이전 페이지">
+            ‹ 이전
+          </a>
+        </li>
+      {% else %}
+        <li class="pagination__item">
+          <span class="pagination__link is-disabled" aria-disabled="true" tabindex="-1">‹ 이전</span>
+        </li>
+      {% endif %}
 
-    <!-- 페이지 번호 -->
-    {% for page_number in questions.paginator.page_range %}
-      {% if page_number >= questions.number|add:-5 and page_number <= questions.number|add:5 %}
-        {% if page_number == questions.number %}
-            <li class="pagination__item">
-            <span class="pagination__link is-active" aria-current="page">{{ page_number }}</span>
-            </li>
-        {% else %}
-            <li class="pagination__item">
-            <a class="pagination__link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-        {% endif %}
-      {% endif %} 
-    {% endfor %}
+      <!-- 페이지 번호 -->
+      {% for page_number in questions.paginator.page_range %}
+        {% if page_number >= questions.number|add:-5 and page_number <= questions.number|add:5 %}
+          {% if page_number == questions.number %}
+              <li class="pagination__item">
+              <span class="pagination__link is-active" aria-current="page">{{ page_number }}</span>
+              </li>
+          {% else %}
+              <li class="pagination__item">
+              <a class="pagination__link" href="?page={{ page_number }}">{{ page_number }}</a>
+              </li>
+          {% endif %}
+        {% endif %} 
+      {% endfor %}
 
-    <!-- 다음 페이지 -->
-    {% if questions.has_next %}
-      <li class="pagination__item">
-        <a class="pagination__link" href="?page={{ questions.next_page_number }}" aria-label="다음 페이지">
-          다음 ›
-        </a>
-      </li>
-    {% else %}
-      <li class="pagination__item">
-        <span class="pagination__link is-disabled" aria-disabled="true" tabindex="-1">다음 ›</span>
-      </li>
-    {% endif %}
+      <!-- 다음 페이지 -->
+      {% if questions.has_next %}
+        <li class="pagination__item">
+          <a class="pagination__link" href="?page={{ questions.next_page_number }}" aria-label="다음 페이지">
+            다음 ›
+          </a>
+        </li>
+      {% else %}
+        <li class="pagination__item">
+          <span class="pagination__link is-disabled" aria-disabled="true" tabindex="-1">다음 ›</span>
+        </li>
+      {% endif %}
 
-  </ul>
-</nav>
-    <hr style="margin: 40px 0;">
+    </ul>
+  </nav>
+  <hr style="margin: 40px 0;">
+
+  </main>
 </div>
-{% if messages %}
-    {% for message in messages %}
-        {% if message.tags == "success" %}
-            <script>
-                alert("{{ message|escapejs }}");
-            </script>
-        {% endif %}
-    {% endfor %}
-{% endif %}
 {% endblock %}

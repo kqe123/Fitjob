@@ -3,9 +3,9 @@ import re
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-User = get_user_model()
 from django.contrib.auth import authenticate
 
+User = get_user_model()
 # 아이디: 5~20 영문/숫자
 USERNAME_RULE = re.compile(r"^[A-Za-z0-9]{5,20}$")
 

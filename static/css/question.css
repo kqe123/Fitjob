@@ -1,0 +1,132 @@
+/* Panel */
+body{
+    margin:0;
+    background:#f6f7fb;
+    color:var(--text);
+}
+
+
+.panel{
+    margin-top : 30px;
+    background:#fff;
+    border:1px solid #e6e8ee;
+    border-radius:18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    padding:26px;
+}
+
+/* ====== error area (폼 전체 폭과 동일) ====== */
+.error-row{
+  margin-top: 35px;
+  margin-left: 0;          /* -10px 제거 */
+  width: 100%;
+  display: block;          /* flex 제거 */
+}
+
+.error-fields{
+  width: 100%;
+}
+
+.error{
+  width: 100%;
+  box-sizing: border-box;  /* padding 포함해서 100% */
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #b35f59;
+  background-color: #fdecea;
+  border: 1px solid #f7c7c3;
+  border-radius: 10px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* 입력 영역 전체 */
+.form-row .fields{
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* input/textarea 공통 */
+.field input,
+.field textarea{
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #e6e8ee;
+  background: #f9f9fa;
+  border-radius: 12px;
+
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #111;
+  font-family: inherit;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+/* textarea 높이 */
+.field textarea{
+  min-height: 250px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* placeholder 톤 */
+.field input::placeholder,
+.field textarea::placeholder{
+  font-family: inherit;
+  color: #9aa3b2;
+}
+
+/* focus 효과 */
+.field input:focus,
+.field textarea:focus{
+  background: #ffffff;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+}
+
+/* disabled(작성자) */
+.field input:disabled{
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* 버튼 묶는 영역 */
+.form-actions{
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;   /* 가운데 정렬 */
+  gap: 14px;
+}
+
+/* 공통 버튼 스타일 통일 */
+.form-actions .btn,
+.form-actions .btn-cancel{
+  display: inline-flex;      /* 핵심 */
+  align-items: center;       /* 세로 가운데 */
+  justify-content: center;   /* 가로 가운데 */
+
+  height: 48px;              /* 높이 통일 */
+  padding: 0 22px;
+  margin-right: 0;       /* base.css 영향 제거 */
+
+  font-size: 15px;
+  border-radius: 6px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* 취소 버튼 전용 */
+.btn-cancel{
+  background: #e6e8eb;
+  color: #111;
+  border: none;
+}
+
+.btn-cancel:hover{
+  background: #c4c9cf;
+}

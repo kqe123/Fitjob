@@ -19,16 +19,12 @@
                 <!-- 🔴 에러 영역 -->
                 <div class="error-row">
                     <div class="error-fields">
-                        {% if form.non_field_errors %}
-                            <div class="error">{{ form.non_field_errors.0 }}</div>
-                        {% endif %}
-
-                        {% if form.username.errors %}
-                            <div class="error">{{ form.username.errors.0 }}</div>
-                        {% endif %}
-
-                        {% if form.password.errors %}
-                            <div class="error">{{ form.password.errors.0 }}</div>
+                        {% if form.errors %}
+                        <div class="error">
+                            {% if form.non_field_errors %}{{ form.non_field_errors.0 }}<br>{% endif %}
+                            {% if form.username.errors %}{{ form.username.errors.0 }}<br>{% endif %}
+                            {% if form.password.errors %}{{ form.password.errors.0 }}{% endif %}
+                        </div>
                         {% endif %}
                     </div>
                 </div>
@@ -44,15 +40,6 @@
                   <button class="btn" type="submit">로그인</button>
                 </div>
               </form>
-              {% if messages %}
-                {% for message in messages %}
-                  {% if message.tags == "success" %}
-                    <script>
-                      alert("{{ message|escapejs }}");
-                    </script>
-                  {% endif %}
-                {% endfor %}
-              {% endif %}
             </div>
           </div>
         </section>
