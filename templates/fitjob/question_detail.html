@@ -27,7 +27,7 @@
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <p><span style="font-weight:900; color:red;">{{ user.username }}</span>님 환영합니다.</p>
+                <p><span style="font-weight:900; color:red;">{{ user.nickname }}</span>님 환영합니다.</p>
                 <a href="{% url 'user:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'user:login' %}">로그인</a>
@@ -69,17 +69,146 @@
             <div class="post-header">
                 <img class="avatar" src="{% static 'images/default_profile.png' %}" alt="프로필" />
                 <div class="post-header__info">
-                    <p class="nickname">{{ question.user_id.nickname }}</p> 
+                    <p class="nickname">{{ question.user.nickname }}</p> 
                     <p class="date">{{ question.created_at|date:"Y-m-d" }} 작성</p>
                 </div>
+                {% if user.is_authenticated %}
+                <div class="more-wrap">
+                  <button type="button" class="more-btn" aria-label="더보기" aria-expanded="false">⋯</button>
+                  <div class="more-menu" role="menu">
+                    <a class="more-item report" href="#">신고</a>
+                    {% if request.user.id == question.user.id %}
+                    <a class="more-item modify" href="#">수정</a>
+                    <form method="post" action="{% url 'fitjob:question_delete' question.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="more-item delete"
+                              onclick="return confirm('🚨 해당 글을 삭제하시겠습니까?');">삭제</button>
+                    </form>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endif %}
             </div>
-            <hr style="margin: 20px 0; border:0; border-top:1px solid #cecece;"">
+            <hr style="margin-top: 10px; border:0; border-top:1px solid #cecece;"">
             <div class="content">{{ question.content|linebreaks }}</div>
             <hr style="margin-top:40px; border:0; border-top:1px solid #cecece;">
+            {% if user.is_authenticated %}
+              <form method="POST" action="{% url 'fitjob:answer_create' question.id %}">
+                {% csrf_token %}
+                {% if form.errors %}
+                  <div class="error">
+                        {% for field, errors in form.errors.items %}
+                          {% for error in errors %}
+                            {{ error }}
+                          {% endfor %}
+                        {% endfor %}
+                  </div>
+                {% endif %}
+                <div class="answer-box">
+                  <textarea class="auth" 
+                            name="content" 
+                            placeholder="솔직하고 정확한 답변을 남겨주세요. (10~1500자)">{{ form.data.content|default:""}}</textarea>
+                  <button class="btn answer-submit" type="submit">답변 등록</button>
+                </div>
+              </form>
+            {% else %}
+              <textarea class="guest" 
+                        placeholder="로그인 후 답변해주세요." 
+                        readonly 
+                        data-login-url="{% url 'user:login' %}"></textarea>
+            {% endif %}
         </div>
     </section>
-
+    {% if answers %}
+      <section class="panel">
+        <p style="margin-left:20px;padding-top:6px;">
+        답변 <span style="color:rgb(67, 189, 238); font-weight:bold;">{{ answers|length }}</span></p>
+        <div class="answer">
+          {% for answer in answers %}
+            <hr style="margin-top:20px; border:0; border-top:1px solid #cecece;">
+            <div class="answer-header">
+                <img class="avatar" src="{% static 'images/default_profile.png' %}" alt="프로필" />
+                <div class="answer-header__info">
+                    <p class="nickname">{{ answer.user.nickname }}</p> 
+                </div>
+            </div>
+            <div class="content">{{ answer.content|linebreaks }}</div>
+            <div class="layout-bottom">
+              <p class="date">{{ answer.created_at|date:"Y-m-d" }} 작성</p>
+              {% if user.is_authenticated %}
+                  <div class="more-wrap">
+                    <button type="button" class="more-btn" aria-label="더보기" aria-expanded="false">⋯</button>
+                    <div class="more-menu" role="menu">
+                      <a class="more-item report" href="#">신고</a>
+                      {% if request.user.id == answer.user.id %}
+                      <a class="more-item modify" href="#">수정</a>
+                      <form method="post" action="{% url 'fitjob:answer_delete' answer.id question.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="more-item delete"
+                                onclick="return confirm('🚨 해당 답변을 삭제하시겠습니까?');">삭제</button>
+                      </form>
+                      {% endif %}
+                    </div>
+                  </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+        <hr style="margin-top:20px; margin-bottom:80px; border:0; border-top:1px solid #cecece;">
+      </section>
+    {% endif %}
   </main>
   <hr style="margin: 40px 0;">
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const guest = document.querySelector("textarea.guest");
+    if (!guest) return;
+
+    const loginUrl = guest.dataset.loginUrl || "/login/";
+
+    const goLogin = () => {
+      alert("답변을 작성하려면 로그인이 필요합니다.");
+      const next = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `${loginUrl}?next=${next}`;
+    };
+
+    // 클릭/터치 시 이동
+    guest.addEventListener("click", (e) => {
+      e.preventDefault();
+      goLogin();
+    });
+
+    // 혹시 포커스가 잡히면 바로 이동
+    guest.addEventListener("focus", (e) => {
+      e.target.blur();
+      goLogin();
+    });
+  });
+</script>
+<script>
+  document.addEventListener("click", (e) => {
+    // wrap -> more-wrap 요소
+    const wrap = e.target.closest(".more-wrap");
+
+    // 해당 메뉴를 제외한 나머지 드롭다운을 전부 닫음.
+    document.querySelectorAll(".more-wrap.open").forEach((w) => {
+      if (w !== wrap) w.classList.remove("open");
+    });
+
+    // ⋯ 버튼 클릭시 open 상태로 만듬.
+    if (e.target.closest(".more-btn") && wrap) {
+      wrap.classList.toggle("open");
+      wrap.querySelector(".more-btn")
+          .setAttribute("aria-expanded", wrap.classList.contains("open") ? "true" : "false");
+      return;
+    }
+
+    // 바깥 클릭이면 open상태의 드롭다운 전부 close 상태로 만듬.
+    if (!wrap) {
+      document.querySelectorAll(".more-wrap.open").forEach((w) => w.classList.remove("open"));
+    }
+  });
+</script>
 {% endblock %}

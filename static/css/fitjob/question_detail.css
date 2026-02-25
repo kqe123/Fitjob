@@ -5,7 +5,6 @@
     --muted:#666;
     --bg:#f6f7fb;
     --radius:14px;
-    --shadow: 0 10px 30px rgba(0,0,0,.08);
     --card:#fff;
     --line:#e6e8ee;
 }
@@ -13,37 +12,40 @@
 
 /* Panel */
 .panel{
-    margin-top : 30px;
+    margin-bottom : 30px;
     background:var(--card);
     border:1px solid var(--line);
-    border-radius:18px;
-    box-shadow: var(--shadow);
-    padding:6px;
 }
+
 .post{
   margin-left : 25px;
   margin-right : 25px;
 }
-.post .title {
+
+.title {
     font-size: 24px;
     font-weight: 500;
     color : #111;
-    text-decoration: none;   /* 밑줄 제거 */
+    line-height: 1.25;
+    letter-spacing: -0.2px;
 }
-.post .content {
+.content {
+    margin-top : 20px;
     font-size: 16px;
-    color : #555;
+    color : #2f3438;
     font-weight: 400;
     text-decoration: none;   /* 밑줄 제거 */
     line-height: 1.5;   /* 기본은 보통 1.2~1.4라 촘촘함 */
+    word-break: keep-all;  /* 한글 가독성 개선 */
 }
-.post .nickname {
+
+.nickname {
     font-size: 14px;
     color : #141414;
     font-weight: 500;
     margin: 0;
 }
-.post .date {
+.date {
     font-size: 14px;
     color : #999;
     margin: 0;
@@ -79,11 +81,245 @@
   line-height: 1.1;
 }
 
+/* ...(더보기) 전체 영역 */
+.more-wrap{
+  position: relative; /* position:absolute 요소의 기준점이 됨.*/
+  display: inline-block; /* 버튼 크키만큼 영역 차지 */
+}
 
+/* ⋯(더보기) 버튼 */
+.more-btn{
+  width: 28px;
+  height: 28px;
+  border: 0; /* 테두리 X */
+  background: transparent; /* 투명화시킴 (무색) */
+  cursor: pointer; /* 마우스커서 올리면 손가락 모양 */
+  font-size: 18px;
+  line-height: 1;
+  color: #777;
+  border-radius: 8px;
+}
+
+/* ⋯(더보기) 버튼에 마우스 댔을때 */
+.more-btn:hover{
+  background: #f4f6fb;
+}
+
+/* 메뉴 박스 */
+.more-menu{
+  position: absolute; /* 부모 기준으로 떠 있는 박스 */
+  left: 0;  /*왼쪽 끝에 딱 위치 */
+  top: 30px; /* 부모 버튼으로부터 아래로 30px 떨어짐. */
+  width: 110px; 
+  background: #fff;
+  border: 1px solid #e6e8ee;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.10);
+  padding: 6px;
+  display: none; /* 기본적으로 숨김 */
+  z-index: 1000; /* z-index : 요소가 겹칠때 누가 위에 올라올지 결정하는 값 */
+}
+
+/* open 시 보이게 */
+.more-wrap.open .more-menu{
+  display: block;
+}
+
+/* 옵션 공통 */
+.more-item{
+  width: 100%;
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #111;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  box-sizing : border-box; /* 실제 너비가 width와 같아짐. */
+}
+
+/* 옵션에 마우스 댔을때 */
+.more-item:hover{
+  background: #f4f6fb;
+}
+
+/* "삭제" 옵션 */
+.more-item.delete{
+  color: #d92d20;
+}
+
+/* "삭제" 옵션 마우스 댔을때 */
+.more-item.delete:hover{
+  background: rgba(217,45,32,0.08);
+}
+
+
+
+
+
+
+/* 답변 영역(포커스 전) */
+.answer-box{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  min-height: 32px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  border: 1px solid #d0d4df;
+  border-radius: 8px;
+  background: #fff;
+  padding: 8px 12px;
+  box-sizing: border-box;
+
+  transition: all .15s ease;
+}
+
+/* 답변 textarea (포커스 전) */
+.answer-box textarea.auth{
+  width: 100%;
+  flex: 1;
+
+  border: none;              /* 테두리는 박스가 담당 */
+  outline: none;
+  resize: none;
+
+  background: transparent;
+  font-size: 14px;
+  color: #111;
+  font-family: inherit;
+
+  min-height: 16px;
+}
+
+/* 답변 등록 버튼 (포커스 전) */
+.answer-submit{
+  display: none;             /* 표시 x */
+  width: 120px;              /* 고정폭 줘야 중앙 느낌남 */
+  margin: 0 auto;            /* ⭐ 가운데 정렬 핵심 */
+  height: 42px;
+
+  border: none;
+  border-radius: 3px;
+  background: #2f3b59;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: background .15s ease;
+}
+
+/* 답변 등록 버튼 (포커스 전) */
+.answer-submit:hover{
+  background: #253047;
+}
+
+/* 답변 영역 (포커스 후) */
+.answer-box:focus-within{
+  min-height: 220px;  
+  box-shadow: 0 0 0 3px rgba(47,59,89,.08);
+  border-color: #9aa6c3;
+}
+
+/* 답변 textarea (포커스 후) */
+.answer-box:focus-within textarea.auth{
+  border-bottom : 1px solid #d0d4df;
+}
+
+/* 답변 등록 버튼 (포커스 후) */
+.answer-box:focus-within .answer-submit{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 로그아웃 상태의 textarea (포커스 후) */
+textarea.guest {
+  width: 100%;
+  height: 50px;
+  box-sizing: border-box;  /* ✅ 이거 한 줄이 핵심 */
+
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #111;
+  font-family: inherit;
+  border: 1px solid #d0d4df;
+  border-radius: 8px;
+  background: #fff;
+}
+
+textarea.guest::placeholder{
+  color: #bb2424;
+  font-weight: 500;
+}
+
+.error {
+    margin-bottom : -10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #b35f59;
+    background-color: #fdecea;
+    border: 1px solid #f7c7c3;
+    border-radius: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.answer{
+  margin-top : 10px;
+  margin-bottom : 10px;
+  margin-left : 25px;
+  margin-right : 25px;
+}
+
+/* 상세 글 헤더(프로필 + 닉네임/날짜 2줄) */
+.answer-header{
+  display: flex;  /* 가로 정렬 */
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+
+.answer-header .avatar{
+  margin: 0;
+  width: 32px;
+  height: 32px;
+
+  display: block;        /* img 아래 여백 제거 */
+  object-fit: cover;     /* 핵심: 박스에 꽉 채움 */
+  border-radius: 50%;    /* 동그랗게 */
+  
+  border: 1px solid var(--line);
+  background: #f3f4f6;   /* 투명 PNG면 배경 깔끔 */
+}
+
+/* 프로필 사진 옆 오른쪽 2줄 영역 */
+.answer-header__info{
+  display: flex;
+  flex-direction: column; /* 세로 정렬 */
+  gap: 4px;
+  line-height: 1.1;
+}
+
+.layout-bottom {
+  display: flex;  /* 가로 정렬 */
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
 
 .board-layout{
   display: flex;
-  gap: 24px;
+  gap: 18px;
   align-items: flex-start;
 }
 

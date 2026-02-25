@@ -5,6 +5,9 @@ app_name = "fitjob"   # ✅ 이거 꼭 있어야 namespace가 생김
 urlpatterns = [
     path("", main, name="main"),
     path("board/", board, name="board"),
-    path("board/create/", question_create, name="question_create"),
+    path("board/question_create/", question_create, name="question_create"),
+    path("board/question_delete/<int:question_id>/", question_delete, name="question_delete"),
+    path("board/answer_create/<int:question_id>/", answer_create, name="answer_create"),
+    path("board/answer_delete/<int:answer_id>/<int:question_id>/", answer_delete, name="answer_delete"),
     path("board/<int:question_id>/", question_detail, name="question_detail"),
 ]

@@ -27,7 +27,7 @@
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <p><span style="font-weight:900; color:red;">{{ user.username }}</span>님 환영합니다.</p>
+                <p><span style="font-weight:900; color:red;">{{ user.nickname }}</span>님 환영합니다.</p>
                 <a href="{% url 'user:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'user:login' %}">로그인</a>
@@ -63,7 +63,7 @@
     </aside>
   
   <main class="board-main">
-  <h2>취업톡</h2>
+  <h2 style="font-weight: 500;">취업톡</h2>
   <p>총 <span style="color:rgb(67, 189, 238); font-weight:bold;">{{ questions.paginator.count }}</span>건</p>
   {% for question in questions %}
     <section class="post">

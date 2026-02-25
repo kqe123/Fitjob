@@ -26,7 +26,7 @@
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <p><span style="font-weight:900; color:red;">{{ user.username }}</span>님 환영합니다.</p>
+                <p><span style="font-weight:900; color:red;">{{ user.nickname }}</span>님 환영합니다.</p>
                 <a href="{% url 'user:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'user:login' %}">로그인</a>

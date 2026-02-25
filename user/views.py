@@ -11,21 +11,31 @@ def login_try(request) :
     if request.user.is_authenticated :
         messages.info(request, "이미 로그인된 상태입니다.")
         return redirect("fitjob:main")
-    
-    # 폼 요청 O -> 로그인 시도
-    elif request.method == "POST" :
+
+    # method = POST -> 로그인 시도
+    if request.method == "POST" :
         form = LoginForm(request.POST)
+        next_url = request.POST.get("next_url")
+        # 로그인 성공
         if form.is_valid() : # 모든 검증 로직이 통과되면 True
             auth_user = form.cleaned_data.get("auth_user") # cleaned_data에서 User객체 가져옴.
             login(request, auth_user) # 로그인 인가 
             messages.success(request, f"✅ {auth_user.nickname}님 환영합니다.")
-            return redirect("fitjob:main")
-        # 로그인 실패면 그대로 login 페이지 렌더 (이동 X)
-        return render(request, "user/login.html", {"form": form})
+
+            # next_url이 None 또는 "" -> 메인화면으로 이동
+            if not next_url :
+                return redirect("fitjob:main")
+            # next_url가 있음 -> 해당 주소로 이동
+            return redirect(next_url)
+        
+        # 로그인 실패 -> 기존 입력 유지하고 새로고침
+        return render(request, "user/login.html", {"form": form, "next_url" : next_url})
     
-    # 폼 요청 X -> 로그인 페이지 렌더링
-    form = LoginForm()
-    return render(request, "user/login.html", {"form": form})
+    # method = GET -> 페이지 렌더링
+    # 페이지 이동 = GET이라고 생각하자.
+    next_url = request.GET.get("next")
+    context = {"form" : LoginForm(), "next_url" : next_url}
+    return render(request, "user/login.html", context)
 
 def logout_try(request) :
     logout(request)

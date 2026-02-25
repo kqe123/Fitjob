@@ -27,7 +27,7 @@
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <p><span style="font-weight:900; color:red;">{{ user.username }}</span>님 환영합니다.</p>
+                <p><span style="font-weight:900; color:red;">{{ user.nickname }}</span>님 환영합니다.</p>
                 <a href="{% url 'user:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'user:login' %}">로그인</a>
@@ -59,12 +59,15 @@
             <div class="form-row">
                 <div class="fields">
                     <div class="field">
-                        <input type="text" name="title" placeholder="질문 제목을 입력해주세요 (최대 100자)" value="{{ form.data.title|default:'' }}" />
+                        <input type="text" 
+                               name="title"
+                               placeholder="질문 제목을 입력해주세요 (최대 100자)"
+                               value="{{ form.data.title|default:'' }}" />
                     </div>
                     <div class="field">
-                        <textarea name="content" placeholder="내용을 입력해주세요 (10~1500자)">{{ form.data.content|default:'' }}</textarea>
+                        <textarea name="content"
+                                  placeholder="내용을 입력해주세요 (10~1500자)">{{ form.data.content|default:'' }}</textarea>
                     </div>
-                        <input type="hidden" name="user_id" value="{{ user.id }}" />
                 </div>
             </div>
             <div class="form-actions">
