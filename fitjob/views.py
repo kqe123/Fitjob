@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from .models import Question, Answer
+from .models import Question, Answer, Report
 from .forms import QuestionForm, AnswerForm
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404 ,redirect
 from django.views.decorators.http import require_POST
+from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required
 
 def main(request) :
     return render(request, "fitjob/main.html")
@@ -59,7 +61,36 @@ def question_delete(request, question_id) :
     question.delete() # 해당 질문 삭제
     messages.success(request, "✅ 해당 글이 삭제되었습니다.")
     return redirect("fitjob:board")
+
+@login_required
+@require_POST
+def question_report(request, question_id):
+    question = get_object_or_404(Question, id=question_id)
+    reason = request.POST.get("reason")
+
+    # 선택된 사유가 없을때 -> 에러 메시지
+    if not reason:
+        messages.error(request, "⚠️ 신고 사유를 선택해주세요.")
+        return redirect("fitjob:question_detail", question_id=question_id)
     
+    # Report모델을 필터링해서 중복 신고 검사 (1차)
+    if Report.objects.filter(question=question, user=request.user).exists() :
+        messages.info(request, "⚠️ 이미 신고한 글입니다.")
+        return redirect("fitjob:question_detail", question_id=question_id)
+
+    # Report 1건 추가 시도
+    try:
+        Report.objects.create(
+            user=request.user,
+            question=question,
+            reason=reason
+        )
+        messages.success(request, "✅ 신고가 접수되었습니다.")
+
+    # 무결성 검사에 걸렸다면 중복 신고 알림 (2차)
+    except IntegrityError:
+        messages.info(request, "⚠️ 이미 신고한 글입니다.")
+    return redirect("fitjob:question_detail", question_id=question_id)
 
 
 @require_POST # POST 요청이 아니면 405 에러 출력
@@ -93,15 +124,45 @@ def answer_delete(request, answer_id, question_id) :
     if not request.user.is_authenticated :
         messages.info(request, "로그인 후 이용해주세요.")
         return redirect("user:login")
-    
+
     answer = Answer.objects.get(id=answer_id)
     if request.user != answer.user : 
-        messages.error(request, "삭제 권한이 없습니다.")
+        messages.error(request, "🚨 삭제 권한이 없습니다.")
         return redirect("fitjob:question_detail", question_id=question_id) 
 
     answer.delete() # 해당 질문 삭제
     messages.success(request, "✅ 해당 답변이 삭제되었습니다.")
     return redirect("fitjob:question_detail", question_id=question_id) 
+
+@login_required
+@require_POST
+def answer_report(request, answer_id, question_id):
+    answer = get_object_or_404(Answer, id=answer_id)
+    reason = request.POST.get("reason")
+
+    # 선택된 사유가 없을때 -> 에러 메시지
+    if not reason:
+        messages.error(request, "⚠️ 신고 사유를 선택해주세요.")
+        return redirect("fitjob:question_detail", question_id=question_id)
+
+    # Report모델을 필터링해서 중복 신고 검사 (1차)
+    if Report.objects.filter(answer=answer, user=request.user).exists() :
+        messages.info(request, "⚠️ 이미 신고한 글입니다.")
+        return redirect("fitjob:question_detail", question_id=question_id)
+
+    #Report 1건 추가 시도
+    try:
+        Report.objects.create(
+            user=request.user,
+            answer=answer,
+            reason=reason,
+        )
+        messages.success(request, "✅ 신고가 접수되었습니다.")
+    # 무결성 검사에 걸렸다면 중복 신고 알림 (2차)
+    except IntegrityError:
+        messages.info(request, "⚠️ 이미 신고한 글입니다.")
+    return redirect("fitjob:question_detail", question_id=question_id)
+
 
 def question_detail(request, question_id) :
     question = Question.objects.get(id=question_id)

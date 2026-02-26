@@ -76,14 +76,15 @@
                 <div class="more-wrap">
                   <button type="button" class="more-btn" aria-label="더보기" aria-expanded="false">⋯</button>
                   <div class="more-menu" role="menu">
-                    <a class="more-item report" href="#">신고</a>
                     {% if request.user.id == question.user.id %}
-                    <a class="more-item modify" href="#">수정</a>
-                    <form method="post" action="{% url 'fitjob:question_delete' question.id %}">
-                      {% csrf_token %}
-                      <button type="submit" class="more-item delete"
-                              onclick="return confirm('🚨 해당 글을 삭제하시겠습니까?');">삭제</button>
-                    </form>
+                      <form method="post" action="{% url 'fitjob:question_delete' question.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="more-item delete"
+                                onclick="return confirm('🚨 해당 글을 삭제하시겠습니까?');">삭제</button>
+                      </form>
+                    {% else %}
+                      <a class="more-item report" href="#"
+                         data-report-url="{% url 'fitjob:report_question' question.id %}">신고</a>
                     {% endif %}
                   </div>
                 </div>
@@ -139,14 +140,15 @@
                   <div class="more-wrap">
                     <button type="button" class="more-btn" aria-label="더보기" aria-expanded="false">⋯</button>
                     <div class="more-menu" role="menu">
-                      <a class="more-item report" href="#">신고</a>
                       {% if request.user.id == answer.user.id %}
-                      <a class="more-item modify" href="#">수정</a>
-                      <form method="post" action="{% url 'fitjob:answer_delete' answer.id question.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="more-item delete"
-                                onclick="return confirm('🚨 해당 답변을 삭제하시겠습니까?');">삭제</button>
-                      </form>
+                        <form method="post" action="{% url 'fitjob:answer_delete' answer.id question.id %}">
+                          {% csrf_token %}
+                          <button type="submit" class="more-item delete"
+                                  onclick="return confirm('🚨 해당 답변을 삭제하시겠습니까?');">삭제</button>
+                        </form>
+                      {% else %}
+                        <a class="more-item report" href="#"
+                          data-report-url="{% url 'fitjob:report_answer' answer.id question.id %}">신고</a>
                       {% endif %}
                     </div>
                   </div>
@@ -161,6 +163,10 @@
   <hr style="margin: 40px 0;">
 </div>
 
+<!-- 신고 모달창 -->
+{% include "fitjob/report_modal.html" %}
+
+<!-- 로그아웃 상태에서 답변 창을 클릭 -> 로그인 창으로 이동 -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const guest = document.querySelector("textarea.guest");
@@ -187,6 +193,8 @@
     });
   });
 </script>
+
+<!-- ...버튼 클릭시 동작들 -->
 <script>
   document.addEventListener("click", (e) => {
     // wrap -> more-wrap 요소
@@ -210,5 +218,50 @@
       document.querySelectorAll(".more-wrap.open").forEach((w) => w.classList.remove("open"));
     }
   });
+</script>
+
+<!-- 신고 버튼 클릭 시 동작들 -->
+<script>
+document.addEventListener("click", (e) => {
+  const reportBtn = e.target.closest("a.report"); //신고 버튼
+  const modal = document.getElementById("reportModal"); //신고 모달
+  const form = document.getElementById("reportForm"); //신고 폼
+
+  // 신고 클릭
+  if (reportBtn) {
+    //1. <a href="#"> 기본 이동 방지
+    e.preventDefault();
+
+    //2. 신고 url(data-report-url) 가져오기
+    const url = reportBtn.dataset.reportUrl;
+    if (!url) return;
+
+    //3. form의 action 설정 (질문/답변에 따라 달라짐)
+    form.action = url; // 원래 report_modal.html의 form action은 비어있음.
+
+    //4.  모달 열기 전 모든 라디오버튼 체크 해제
+    form.querySelectorAll('input[name="reason"]').forEach(r => r.checked = false);
+    modal.classList.add("open"); // 모달 화면 보이게 설정
+    modal.setAttribute("aria-hidden", "false"); // 접근성용 (스크린리더)
+    return;
+  }
+
+  // 닫기(배경/닫기버튼) 동작
+  if (modal && modal.classList.contains("open")) {
+    if (e.target.closest("[data-close]")) {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+    }
+  }
+});
+
+// ESC로 닫기 동작
+document.addEventListener("keydown", (e) => {
+  const modal = document.getElementById("reportModal");
+  if (e.key === "Escape" && modal?.classList.contains("open")) {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+  }
+});
 </script>
 {% endblock %}

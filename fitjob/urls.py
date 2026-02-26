@@ -10,4 +10,6 @@ urlpatterns = [
     path("board/answer_create/<int:question_id>/", answer_create, name="answer_create"),
     path("board/answer_delete/<int:answer_id>/<int:question_id>/", answer_delete, name="answer_delete"),
     path("board/<int:question_id>/", question_detail, name="question_detail"),
+    path("board/question_report/<int:question_id>/", question_report, name="report_question"),
+    path("board/answer_report/<int:answer_id>/<int:question_id>", answer_report, name="report_answer"),
 ]

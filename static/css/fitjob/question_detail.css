@@ -310,12 +310,118 @@ textarea.guest::placeholder{
   line-height: 1.1;
 }
 
+/*답변 생성일자, ...버튼을 포함한 레이아웃 */
 .layout-bottom {
   display: flex;  /* 가로 정렬 */
   align-items: center;
   gap: 10px;
   margin-top: 10px;
 }
+
+/* 신고 버튼 클릭 시 모달창 */
+/* --- modal basic (clean) --- */
+.modal { display: none; }
+.modal.open { display: block; position: fixed; inset: 0; z-index: 9999; }
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+}
+
+/* card */
+.modal-card {
+  position: relative;
+  width: min(520px, 92vw);
+  margin: 12vh auto 0;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(0,0,0,.18);
+  overflow: hidden;
+}
+
+/* header */
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 1px solid #eee;
+}
+.modal-head h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.modal-close {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  line-height: 1;
+}
+.modal-close:hover { background: #f7f7f7; }
+
+/* body */
+.modal-body {
+  padding: 16px 18px 10px;
+}
+.modal-sub {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+}
+
+/* radio list: label as row */
+.modal-body label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.modal-body label:hover {
+  background: #fafafa;
+  border-color: #e3e3e3;
+}
+
+/* remove <br> spacing side-effect */
+.modal-body br { display: none; }
+
+.modal-body input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+/* footer */
+.modal-foot {
+  padding: 14px 18px 18px;
+  border-top: 1px solid #eee;
+  background: #fafafa;
+}
+
+/* button */
+.btn-report {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+.btn-report:hover { background: #f5f5f5; }
+.btn-report:active { transform: translateY(1px); }
+
 
 .board-layout{
   display: flex;

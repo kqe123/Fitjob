@@ -1,0 +1,28 @@
+<!-- _report_modal.html -->
+<div id="reportModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop" data-close></div>
+
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+    <div class="modal-head">
+      <h2 id="reportTitle">신고하기</h2>
+      <button type="button" class="modal-close" data-close aria-label="닫기">✕</button>
+    </div>
+
+    <form id="reportForm" method="post">
+      {% csrf_token %}
+
+      <div class="modal-body">
+        <p class="modal-sub">사유 선택</p>
+
+        <label><input type="radio" name="reason" value="혐오/차별/욕설" required> 혐오/차별/욕설</label><br>
+        <label><input type="radio" name="reason" value="스팸/홍보/도배" required> 스팸/홍보/도배</label><br>
+        <label><input type="radio" name="reason" value="청소년 유해" required> 청소년 유해</label><br>
+        <label><input type="radio" name="reason" value="불법 정보" required> 불법 정보</label><br>
+      </div>
+
+      <div class="modal-foot">
+        <button type="submit" class="btn-report">신고하기</button>
+      </div>
+    </form>
+  </div>
+</div>
