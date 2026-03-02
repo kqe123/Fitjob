@@ -1,6 +1,6 @@
 {% extends "base/index.html" %}
 
-{% block title %}<title>Fitjob | 홈</title>{% endblock %}
+{% block title %}<title>Fitjob | 글 작성</title>{% endblock %}
 {% block css %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
@@ -27,7 +27,8 @@
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <p><span style="font-weight:900; color:red;">{{ user.nickname }}</span>님 환영합니다.</p>
+                <img src="{{ user.profile_image.url }}" alt="프로필" >
+                <a href="{% url 'user:mypage' %}"><span style="font-weight:700;">{{ user.nickname }}</span>님</a>
                 <a href="{% url 'user:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'user:login' %}">로그인</a>

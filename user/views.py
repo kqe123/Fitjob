@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 import re
 from .forms import SignupForm, LoginForm
 from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
 def login_try(request) :
     # 이미 로그인된 상태면 로그인 페이지 접근 불가
@@ -57,4 +58,8 @@ def signup_try(request):
     # 폼 요청 X -> 회원가입 페이지 렌더링
     form = SignupForm()
     return render(request, "user/signup.html", {"form": form})
+
+@login_required(login_url='user:login')
+def mypage(request):
+    return render(request, "user/mypage.html")
 

@@ -8,6 +8,11 @@ from django.contrib.auth.models import PermissionsMixin
 from django.core.validators import RegexValidator, MinLengthValidator
 import uuid
 
+def user_profile_upload_path(instance, filename):
+    # 파일명이 겹칠 수 있으니 uuid로 저장하는 걸 추천
+    ext = filename.split(".")[-1]
+    return f"profiles/{instance.id}/avatar.{ext}"
+
 # 아이디 유효성 검사기
 username_validator = RegexValidator(
     regex=r"^[a-zA-Z0-9]{5,20}$",
@@ -60,6 +65,14 @@ class User(AbstractUser, PermissionsMixin) :
         blank=True,
         validators=[nickname_validator, MinLengthValidator(2)],
     )
+    
+    profile_image = models.ImageField(
+        upload_to=user_profile_upload_path,
+        null=True,
+        blank=True,
+        default="profiles/default.png"   # ✅ 기본 이미지 경로
+    )
+
     is_admin = models.BooleanField(default=False) # 관리자 여부
     created_at = models.DateTimeField(auto_now_add=True) # 생성일
     updated_at = models.DateTimeField(auto_now=True) # 수정일

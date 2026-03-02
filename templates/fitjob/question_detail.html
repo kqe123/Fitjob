@@ -1,6 +1,6 @@
 {% extends "base/index.html" %}
 
-{% block title %}<title>Fitjob | 홈</title>{% endblock %}
+{% block title %}<title>Fitjob | 게시물</title>{% endblock %}
 {% block css %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/header.css' %}">
@@ -27,7 +27,8 @@
         <!-- 오른쪽: 로그인/회원가입 -->
         <div class="nav-right">
             {% if user.is_authenticated %}
-                <p><span style="font-weight:900; color:red;">{{ user.nickname }}</span>님 환영합니다.</p>
+                <img src="{{ user.profile_image.url }}" alt="프로필" >
+                <a href="{% url 'user:mypage' %}"><span style="font-weight:700;">{{ user.nickname }}</span>님</a>
                 <a href="{% url 'user:logout' %}">로그아웃</a>
             {% else %}
                 <a href="{% url 'user:login' %}">로그인</a>
@@ -49,13 +50,13 @@
 
       {% if user.is_authenticated %}
         <div class="board-side-card">
-          <img class="board-side-avatar" src="{% static 'images/default_profile.png' %}" alt="프로필 사진">
+          <img class="board-side-avatar" src="{{ user.profile_image.url }}" alt="프로필" >
           <p style="font-size: 13px; color: black; text-align: center; margin: 0 0 12px;"><span style="font-weight: bold;">{{ user.nickname }}</span>님</p>
           <p style="font-size: 13px; color: #777; text-align: center; margin: 0 0 12px;">글 {{user_question_count}} | 답변 0</p>
         </div>
       {% else %}
         <div class="board-side-card">
-          <img class="board-side-avatar" src="{% static 'images/default_profile.png' %}" alt="프로필 사진">
+          <img class="board-side-avatar" src="{% static 'images/default.png' %}" alt="프로필 사진">
           <p class="board-side-text">로그인 후 질문과 활동을 시작해보세요</p>
           <a class="board-side-login" href="{% url 'user:login' %}">로그인</a>
         </div>
@@ -67,7 +68,7 @@
         <div class="post">
             <h2 class="title">{{ question.title }}</h2>
             <div class="post-header">
-                <img class="avatar" src="{% static 'images/default_profile.png' %}" alt="프로필" />
+                <img class="avatar" src="{{ question.user.profile_image.url }}" alt="프로필" />
                 <div class="post-header__info">
                     <p class="nickname">{{ question.user.nickname }}</p> 
                     <p class="date">{{ question.created_at|date:"Y-m-d" }} 작성</p>
@@ -128,7 +129,7 @@
           {% for answer in answers %}
             <hr style="margin-top:20px; border:0; border-top:1px solid #cecece;">
             <div class="answer-header">
-                <img class="avatar" src="{% static 'images/default_profile.png' %}" alt="프로필" />
+                <img class="avatar" src="{{ answer.user.profile_image.url }}" alt="프로필" />
                 <div class="answer-header__info">
                     <p class="nickname">{{ answer.user.nickname }}</p> 
                 </div>

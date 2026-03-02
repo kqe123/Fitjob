@@ -1,0 +1,75 @@
+/* Panel */
+:root{
+    --blue:#1f66ff;
+    --text:#111;
+    --muted:#666;
+    --bg:#f6f7fb;
+    --radius:14px;
+    --shadow: 0 10px 30px rgba(0,0,0,.08);
+}
+
+.mypage-layout{
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+/* 왼쪽 사이드 */
+.mypage-side{
+  width: 210px;
+  flex: 0 0 210px;
+  position: static;
+  top: 80px; /* header 높이에 맞게 조절 */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 오른쪽 메인 */
+.mypage-main{
+  flex: 1;
+  min-width: 0;
+}
+
+/* 사이드 버튼 */
+.mypage-side-btn {
+  display: block;
+  width: 120px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+
+  border-radius: 10px;
+  font-weight: 600;
+  text-align: center;
+
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.mypage-side-btn:hover {
+  background: #2f3a52;
+}
+
+/* 현재 활성화된 사이드 버튼 */
+.mypage-side-btn.active {
+  background: #ffffff;
+  color: #2b2b2b;
+  border-left: 5px solid #2ecc71;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* 반응형: 모바일에서는 사이드 위로 */
+@media (max-width: 900px){
+  .mypage-layout{
+    flex-direction: column;
+  }
+  .mypage-side{
+    width: 100%;
+    flex: 0 0 auto;
+    position: static;
+  }
+}

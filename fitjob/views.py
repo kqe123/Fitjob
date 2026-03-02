@@ -62,7 +62,7 @@ def question_delete(request, question_id) :
     messages.success(request, "✅ 해당 글이 삭제되었습니다.")
     return redirect("fitjob:board")
 
-@login_required
+@login_required(login_url='user:login')
 @require_POST
 def question_report(request, question_id):
     question = get_object_or_404(Question, id=question_id)
