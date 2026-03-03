@@ -44,23 +44,22 @@
   <div class="mypage-layout">
     <!-- 왼쪽 사이드 -->
     <aside class="mypage-side">
-      <a class="mypage-side-btn" href="{% url 'fitjob:question_create' %}">
+      <a class="mypage-side-btn {% if section == 'profile' %} active{% endif %}"
+        href="{% url 'user:mypage_detail' 'profile' %}">
         프로필 수정
       </a>
-      <a class="mypage-side-btn" href="{% url 'fitjob:question_create' %}">
+      <a class="mypage-side-btn {% if section == 'password' %} active{% endif %}"
+        href="{% url 'user:mypage_detail' 'password' %}">
         비밀번호 변경
       </a>
-      <a class="mypage-side-btn" href="{% url 'fitjob:question_create' %}">
+      <a class="mypage-side-btn {% if section == 'coverletter' %} active{% endif %}"
+        href="{% url 'user:mypage_detail' 'coverletter' %}">
         자기소개서 등록
       </a>
     </aside>
   
   <main class="mypage-main">
-  <h2 style="font-weight: 500;">마이페이지</h2>
-    
-  
-  <hr style="margin: 40px 0;">
-
+  {% include section_template %}
   </main>
 </div>
 {% endblock %}

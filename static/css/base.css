@@ -15,14 +15,4 @@ main { padding: 20px; }
 /* footer */
 footer { background: #f3f4f6; padding: 10px; text-align: center; color: #555; font-size:15px; }
 
-/* 버튼 스타일 */
-.btn {
-    display: inline-block;
-    padding: 12px 20px;
-    background: #2563eb;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    margin-right: 10px;
-    }
 .btn.secondary { background: #4b5563; }

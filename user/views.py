@@ -3,9 +3,17 @@ from .models import User
 from django.contrib import messages
 from django.shortcuts import redirect
 import re
-from .forms import SignupForm, LoginForm
+from .forms import SignupForm, LoginForm, ChangePasswordForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.contrib.auth import update_session_auth_hash
+
+SECTION_TEMPLATES = {
+    "profile": "user/mypage_content/profile.html",
+    "password": "user/mypage_content/password.html",
+    "coverletter": "user/mypage_content/coverletter.html",
+    }
 
 def login_try(request) :
     # 이미 로그인된 상태면 로그인 페이지 접근 불가
@@ -60,6 +68,23 @@ def signup_try(request):
     return render(request, "user/signup.html", {"form": form})
 
 @login_required(login_url='user:login')
-def mypage(request):
-    return render(request, "user/mypage.html")
+def mypage(request, section="profile"):    
+    section_template = SECTION_TEMPLATES.get(section)
+    context = {"section" : section, "section_template" : section_template}
+    return render(request, "user/mypage.html", context)
 
+@login_required(login_url='user:login')
+@require_POST
+def change_password(request):    
+    form = ChangePasswordForm(request.user, request.POST) # POST 요청으로 받은 모든 파라미터를 폼에 전달 
+    if form.is_valid() :
+        new_pw = form.cleaned_data["new_password1"]
+        request.user.set_password(new_pw)
+        request.user.save()
+        update_session_auth_hash(request, request.user)  # ✅ 비번 바꿔도 로그인 유지 메서드
+
+        messages.success(request, "✅ 비밀번호 변경이 완료되었습니다.")
+        return redirect("fitjob:main")
+        
+    return render(request, "user/mypage.html", 
+            {"form": form, "section" : "password", "section_template" : SECTION_TEMPLATES['password']})

@@ -18,17 +18,17 @@ NICKNAME_RULE = re.compile(r"^[가-힣A-Za-z0-9_]{2,10}$")
 # 회원가입폼
 # 모델폼 : Django 모델과 연동된 폼
 class SignupForm(forms.ModelForm):
-    # 재정의 필드
+    # 필드
     username = forms.CharField(error_messages={"required": "※ 아이디를 입력해주세요."})
     nickname = forms.CharField(error_messages={"required": "※ 닉네임을 입력해주세요."})
 
-    # 재정의 필드
+    # 필드
     password1 = forms.CharField(
         widget=forms.PasswordInput,
         label="비밀번호",
         error_messages={"required": "※ 비밀번호를 입력해주세요."},
     )
-    # 재정의 필드
+    # 필드
     password2 = forms.CharField(
         widget=forms.PasswordInput,
         label="비밀번호 확인",
@@ -98,7 +98,7 @@ class SignupForm(forms.ModelForm):
 # 로그인폼
 # 폼 : Django 모델과 연동 X
 class LoginForm(forms.Form) :
-    # 재정의 필드
+    # 필드
     username = forms.CharField(error_messages={"required": "※ ID를 입력해주세요."})
     password = forms.CharField(widget=forms.PasswordInput, error_messages={"required": "※ 비밀번호를 입력해주세요."})
 
@@ -113,5 +113,39 @@ class LoginForm(forms.Form) :
             cleaned["auth_user"] = auth_user
         
         return cleaned
+
+class ChangePasswordForm(forms.Form) :
+    # 필드
+    old_password = forms.CharField(widget=forms.PasswordInput, error_messages={"required": "※ 기존 비밀번호를 입력해주세요."})
+    new_password1 = forms.CharField(widget=forms.PasswordInput, error_messages={"required": "※ 새 비밀번호를 입력해주세요."})
+    new_password2 = forms.CharField(widget=forms.PasswordInput, error_messages={"required": "※ 새 비밀번호 확인을 입력해주세요."})
+
+    # 현재 로그인 사용자를 저장하기 위한 생성자
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user  # 현재 로그인 사용자 저장
+
+    def clean_old_password(self) :
+        old_pw = (self.cleaned_data.get("old_password") or "").strip()
+        if not self.user.check_password(old_pw):
+            raise ValidationError("※ 기존 비밀번호가 현재 비밀번호와 일치하지 않습니다.")
+        return old_pw
     
-                
+    def clean_new_password1(self) :
+        new_pw1 = (self.cleaned_data.get("new_password1") or "").strip()
+        if self.user.check_password(new_pw1):
+            raise ValidationError("※ 새 비밀번호가 현재 비밀번호와 같습니다.")
+        return new_pw1
+    
+    def clean_new_password2(self) :
+        return (self.cleaned_data.get("new_password2") or "").strip()
+    
+
+    def clean(self) :
+        cleaned = super().clean()
+        new_pw1 = cleaned.get("new_password1")
+        new_pw2 = cleaned.get("new_password2")
+        if new_pw1 and new_pw2 and new_pw1 != new_pw2:
+            raise ValidationError("※ 새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.")
+        return cleaned
+    
