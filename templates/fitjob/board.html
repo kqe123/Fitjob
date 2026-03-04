@@ -8,35 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/fitjob/board.css' %}">
 {% endblock %}
 {% block header %}
-<header>
-    <nav>
-        <!-- 왼쪽 : 로고 -->
-        <div class="nav-left">
-            <a href="{% url 'fitjob:main' %}">
-                <img src="{% static 'images/logo.png' %}" alt="로고">
-            </a>
-        </div>
-
-        <!-- 가운데: 메뉴 -->
-        <div class="nav-center">
-            <a href="/resume/">자기소개서 평가</a>
-            <a href="/interview/">면접 질문</a>
-            <a href="{% url 'fitjob:board' %}"><span style="color:blue;">취업톡</span></a>
-        </div>
-
-        <!-- 오른쪽: 로그인/회원가입 -->
-        <div class="nav-right">
-            {% if user.is_authenticated %}
-              <img src="{{ user.profile_image.url }}" alt="프로필" >
-              <a href="{% url 'user:mypage' %}"><span style="font-weight:700;">{{ user.nickname }}</span>님</a>
-              <a href="{% url 'user:logout' %}">로그아웃</a>
-            {% else %}
-                <a href="{% url 'user:login' %}">로그인</a>
-            {% endif %}
-            <a href="{% url 'user:signup' %}">회원가입</a>
-        </div>
-    </nav>
-</header>
+  {% include "base/header.html" %}
 {% endblock %}
 
 {% block content %}

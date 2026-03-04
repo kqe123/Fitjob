@@ -1,0 +1,15 @@
+{% extends "base/index.html" %}
+
+{% block title %}<title>Fitjob | 홈</title>{% endblock %}
+{% block css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fitjob/main.css' %}">
+{% endblock %}
+{% block header %}
+    {% include "base/header.html" %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}

@@ -12,4 +12,6 @@ urlpatterns = [
     path("board/<int:question_id>/", question_detail, name="question_detail"),
     path("board/question_report/<int:question_id>/", question_report, name="report_question"),
     path("board/answer_report/<int:answer_id>/<int:question_id>", answer_report, name="report_answer"),
+    path("interview/", interview, name="interview"),
+    path("coverletter/", coverletter, name="coverletter"),
 ]

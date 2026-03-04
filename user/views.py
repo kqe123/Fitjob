@@ -8,6 +8,8 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.contrib.auth import update_session_auth_hash
+import os
+from django.conf import settings
 
 SECTION_TEMPLATES = {
     "profile": "user/mypage_content/profile.html",
@@ -96,6 +98,9 @@ def change_profile(request):
     nickname = request.POST.get("nickname", "").strip()
     img = request.FILES.get("profile_image")
 
+    # ✅ 이전 파일 경로 백업
+    old_image = user.profile_image.name  # 예: "profiles/xxx/avatar.png"
+
     # 1. 닉네임이 규칙을 통과한 경우 user.nickname 수정
     NICKNAME_RULE = re.compile(r"^[가-힣A-Za-z0-9_]{2,10}$")
     if not NICKNAME_RULE.match(nickname):
@@ -116,8 +121,16 @@ def change_profile(request):
             return redirect("user:mypage")
         
         user.profile_image = img
-        
+
+    # 3. ✅ 프로필 수정    
     user.save()
+
+    # 4. 기존 프로필 이미지는 삭제 
+    if old_image not in (user.profile_image.name, "profiles/default.png") :
+        old_path = os.path.join(settings.MEDIA_ROOT, old_image)
+        if os.path.exists(old_path):
+            os.remove(old_path)
+
     messages.success(request, "✅ 프로필이 수정되었습니다.")
     return redirect("user:mypage")  # 마이페이지(프로필)로 돌아감
 

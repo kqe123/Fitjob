@@ -175,3 +175,9 @@ def question_detail(request, question_id) :
     context = {"question": question, "user_question_count": user_questions_count, "answers" : answers}
     return render(request, "fitjob/question_detail.html", context)
 
+def interview(request) :
+    return render(request, "fitjob/interview.html")
+
+def coverletter(request) :
+    return render(request, "fitjob/coverletter.html")
+
