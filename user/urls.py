@@ -8,6 +8,7 @@ urlpatterns = [
     path("signup/", signup_try, name="signup"),
     path("logout/", logout_try, name="logout"),
     path("mypage/password/change_password/", change_password, name="change_password"),
+    path("mypage/password/change_profile/", change_profile, name="change_profile"),
     path("mypage/", mypage, name="mypage"),
     path("mypage/<str:section>/", mypage, name="mypage_detail"),
 

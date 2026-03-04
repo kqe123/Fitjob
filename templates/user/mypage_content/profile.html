@@ -1,2 +1,53 @@
 <h2>프로필 수정</h1>
 <p class="explanation">프로필과 별명을 수정 하실 수 있습니다.</p>
+<form style="margin-top:30px;" method="POST" action="{% url 'user:change_profile' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% if form.errors %}
+        <div class="error">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <div style="margin-top: 4px;">{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <div class="profile-table">
+    <!-- 1행: 프로필사진 -->
+    <div class="cell th">프로필사진</div>
+    <div class="cell td">
+      <div class="photo-row">
+        <img class="avatar" 
+            id="avatarPreview"
+            src="{{ user.profile_image.url }}" 
+            data-original="{{ user.profile_image.url }}" alt="프로필" >
+
+        <!-- 숨김 파일 인풋 -->
+        <input
+          id="profileImageInput"
+          type="file"
+          name="profile_image"
+          accept="image/*"
+          hidden
+        >
+
+        <!-- 삭제 여부 (서버에 전달) -->
+        <input id="removeProfileImage" type="hidden" name="remove_profile_image" value="0">
+
+        <div class="btns">
+          <button id="changeBtn" type="button" class="btn">사진변경</button>
+          <button id="deleteBtn" type="button" class="btn danger">삭제</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2행: 별명 -->
+    <div class="cell th">별명</div>
+    <div class="cell td">
+      <input class="input" name="nickname" type="text" placeholder="별명을 입력하세요" value={{user.nickname}}>
+    </div>
+  </div>
+
+  <div class="profile-actions">
+    <button type="submit" class="btn primary">저장</button>
+  </div>
+</form>

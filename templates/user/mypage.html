@@ -62,4 +62,53 @@
   {% include section_template %}
   </main>
 </div>
+
+<script>
+  const changeBtn = document.getElementById("changeBtn");
+  const deleteBtn = document.getElementById("deleteBtn");
+  const fileInput = document.getElementById("profileImageInput");
+  const preview = document.getElementById("avatarPreview");
+  const removeHidden = document.getElementById("removeProfileImage");
+
+  // 원본 이미지 URL (초기 상태로 되돌릴 때 사용)
+  const originalSrc = preview.dataset.original;
+
+  // 파일 선택창 열기
+  changeBtn.addEventListener("click", () => {
+    fileInput.click();
+  });
+
+  // 파일 선택되면 프리뷰 변경
+  fileInput.addEventListener("change", () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+
+    // 이미지 파일만 허용(간단 체크)
+    if (!file.type.startsWith("image/")) {
+      alert("이미지 파일만 업로드할 수 있습니다.");
+      fileInput.value = "";
+      return;
+    }
+
+    // 삭제 플래그 해제 (새 이미지 선택했으니 삭제 아님)
+    removeHidden.value = "0";
+
+    // 프리뷰 갱신
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+  });
+
+  // 삭제 버튼: "새로 선택한 프리뷰" 취소 + 원래 이미지로 복구
+  deleteBtn.addEventListener("click", () => {
+    // 새로 선택한 파일 입력값 제거(프리뷰 취소)
+    fileInput.value = "";
+
+    // 원본 이미지로 되돌리기
+    preview.src = originalSrc;
+
+    // (옵션) 만약 '저장' 누르면 실제로도 프로필이미지 삭제하고 싶으면 1로
+    // 지금 요구사항은 "새 프리뷰만 사라짐"이라면 0 유지가 맞음.
+    removeHidden.value = "0";
+  });
+</script>
 {% endblock %}

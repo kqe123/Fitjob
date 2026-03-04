@@ -88,3 +88,37 @@ def change_password(request):
         
     return render(request, "user/mypage.html", 
             {"form": form, "section" : "password", "section_template" : SECTION_TEMPLATES['password']})
+
+@login_required(login_url='user:login')
+@require_POST
+def change_profile(request):    
+    user = request.user
+    nickname = request.POST.get("nickname", "").strip()
+    img = request.FILES.get("profile_image")
+
+    # 1. 닉네임이 규칙을 통과한 경우 user.nickname 수정
+    NICKNAME_RULE = re.compile(r"^[가-힣A-Za-z0-9_]{2,10}$")
+    if not NICKNAME_RULE.match(nickname):
+        messages.error(request, "⚠️ 별명은 2~10자 한글/영어/숫자로 이루어져야 합니다!")
+        return redirect("user:mypage")  # 마이페이지(프로필)로 돌아감
+    user.nickname = nickname
+
+    # 2. 업로드 프로필 사진이 존재하고, 조건을 모두 만족할 경우에만 user.profile_image 수정
+    if img : 
+        # 이미지 파일이 아니라면 오류
+        if not (img.content_type or "").startswith("image/"):
+            messages.error(request, "⚠️ 이미지 파일만 업로드할 수 있습니다.")
+            return redirect("user:mypage")
+
+        # 용량이 3MB가 넘으면 오류
+        if img.size > 3 * 1024 * 1024:
+            messages.error(request, "⚠️ 이미지 용량은 3MB 이하만 가능합니다.")
+            return redirect("user:mypage")
+        
+        user.profile_image = img
+        
+    user.save()
+    messages.success(request, "✅ 프로필이 수정되었습니다.")
+    return redirect("user:mypage")  # 마이페이지(프로필)로 돌아감
+
+
